@@ -1,0 +1,30 @@
+
+@isTest
+private class AccountTriggerTest {
+    
+    @isTest static void Test200Accounts() {
+        
+        List<Account> accounts = new List<Account>();
+        string billingState = 'CA';
+        string shippingState = 'CA';
+                
+        for (Integer i= 0; i < 200; i++) {
+            if (i == 0) {
+                billingState = 'TT';
+            }
+            Account account = new Account(Name='Test Account ' + i, BillingState=billingState, ShippingState=shippingState);
+            accounts.add(account);
+        }              
+        
+        Test.startTest();
+        insert accounts;                               
+        Test.stopTest();
+		
+        List<Account> lstAccount = [select ShippingState from Account];
+        for (Account acc: lstAccount )
+        {
+            System.assertEquals('CA', acc.ShippingState, 'ERROR');
+        }
+   
+    }
+}
